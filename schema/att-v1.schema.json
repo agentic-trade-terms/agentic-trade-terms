@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/agentic-trade-terms/agentic-trade-terms/blob/main/schema/att-v1.schema.json",
+  "title": "Agentic Trade Terms (ATT) v1 manifest",
+  "type": "object",
+  "required": ["schema", "profile", "modules"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "att/v1" },
+    "profile": { "enum": ["MICRO", "STANDARD", "HIGH"] },
+    "seller": { "$ref": "#/$defs/address" },
+    "termsUri": { "type": "string", "format": "uri" },
+    "legalMirrorUri": { "type": "string", "format": "uri" },
+    "legalMirrorHash": { "$ref": "#/$defs/hash32" },
+    "modules": {
+      "type": "object",
+      "required": ["T-DEL", "T-REF"],
+      "additionalProperties": false,
+      "properties": {
+        "T-DEL": { "$ref": "#/$defs/tDel" },
+        "T-REF": { "$ref": "#/$defs/tRef" },
+        "T-LIC": { "$ref": "#/$defs/tLic" },
+        "T-LIA": { "$ref": "#/$defs/tLia" },
+        "T-ARB": { "$ref": "#/$defs/tArb" },
+        "T-ID": { "$ref": "#/$defs/tId" }
+      }
+    }
+  },
+  "$defs": {
+    "address": { "type": "string", "pattern": "^0x[0-9a-fA-F]{40}$" },
+    "hash32": { "type": "string", "pattern": "^0x[0-9a-f]{64}$" },
+    "tDel": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaRef": { "type": "string" },
+        "latencyMs": { "type": "integer", "minimum": 1 },
+        "nonEmpty": { "type": "boolean", "default": true },
+        "custom": { "type": "string", "maxLength": 500 }
+      }
+    },
+    "tRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "auto": {
+          "type": "array",
+          "items": { "enum": ["5xx", "timeout", "schema-fail"] },
+          "default": ["5xx", "timeout", "schema-fail"]
+        },
+        "windowHours": { "type": "integer", "minimum": 1, "default": 72 },
+        "remedy": { "enum": ["refund", "redo", "partial"], "default": "refund" },
+        "openBy": { "enum": ["buyer", "seller", "both"], "default": "buyer" }
+      }
+    },
+    "tLic": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "grants": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(use-internal|cache:(perpetual|[0-9]+[smhd])|derive|train|redistribute|resell)$"
+          },
+          "default": ["use-internal"]
+        },
+        "conditions": {
+          "type": "array",
+          "items": { "enum": ["attribution"] },
+          "default": []
+        }
+      }
+    },
+    "tLia": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "capMultiple": { "type": "integer", "minimum": 1, "default": 10 },
+        "capFixed": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]{1,6})?$", "description": "fixed cap as decimal string, denominated in USD stablecoin (USDC in v1)" },
+        "consequential": { "type": "boolean", "default": false }
+      }
+    },
+    "tArb": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ladder": {
+          "type": "array",
+          "items": { "enum": ["auto", "human", "panel"] },
+          "default": ["auto", "human"]
+        },
+        "arbiter": { "type": "string" },
+        "altArbiters": { "type": "array", "items": { "type": "string" } },
+        "feeSchedule": { "type": "object", "additionalProperties": { "type": "string" } },
+        "decisionWindowHours": { "type": "integer", "minimum": 1, "default": 72 },
+        "finality": { "enum": ["cert-on-base", "none"], "default": "cert-on-base" },
+        "callback": { "type": "string" }
+      }
+    },
+    "tId": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tier": { "enum": ["anonymous", "attested", "bonded"], "default": "anonymous" },
+        "attestor": { "type": "string" },
+        "bondRef": { "type": "string" }
+      }
+    }
+  }
+}

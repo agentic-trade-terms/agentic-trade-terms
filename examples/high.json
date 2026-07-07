@@ -1,0 +1,23 @@
+{
+  "schema": "att/v1",
+  "profile": "HIGH",
+  "seller": "0x3333333333333333333333333333333333333333",
+  "legalMirrorUri": "https://seller.example/legal/att-mirror-v1.pdf",
+  "legalMirrorHash": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "modules": {
+    "T-DEL": { "schemaRef": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "latencyMs": 60000, "nonEmpty": true },
+    "T-REF": { "auto": ["5xx", "timeout", "schema-fail"], "windowHours": 168, "remedy": "redo", "openBy": "both" },
+    "T-LIC": { "grants": ["use-internal", "derive", "redistribute"], "conditions": ["attribution"] },
+    "T-LIA": { "capMultiple": 10, "capFixed": "25000", "consequential": false },
+    "T-ARB": {
+      "ladder": ["auto", "human", "panel"],
+      "arbiter": "arbiter.example#disputes",
+      "altArbiters": ["dispute-court.example#objective"],
+      "feeSchedule": { "human": "max(5%, 5 USDC)" },
+      "decisionWindowHours": 72,
+      "finality": "cert-on-base",
+      "callback": "att-verdict-callback/v1"
+    },
+    "T-ID": { "tier": "bonded", "attestor": "attestor.example#kyb" }
+  }
+}

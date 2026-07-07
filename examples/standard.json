@@ -1,0 +1,18 @@
+{
+  "schema": "att/v1",
+  "profile": "STANDARD",
+  "seller": "0x2222222222222222222222222222222222222222",
+  "modules": {
+    "T-DEL": { "schemaRef": "https://seller.example/schemas/report.json", "latencyMs": 30000, "nonEmpty": true },
+    "T-REF": { "auto": ["5xx", "timeout", "schema-fail"], "windowHours": 72, "remedy": "refund", "openBy": "buyer" },
+    "T-LIC": { "grants": ["use-internal", "cache:24h", "train"], "conditions": ["attribution"] },
+    "T-LIA": { "capMultiple": 10, "consequential": false },
+    "T-ARB": {
+      "ladder": ["auto", "human"],
+      "arbiter": "arbiter.example#disputes",
+      "decisionWindowHours": 72,
+      "finality": "cert-on-base",
+      "callback": "att-verdict-callback/v1"
+    }
+  }
+}

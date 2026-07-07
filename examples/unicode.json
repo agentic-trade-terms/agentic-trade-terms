@@ -1,0 +1,9 @@
+{
+  "schema": "att/v1",
+  "profile": "MICRO",
+  "seller": "0x4444444444444444444444444444444444444444",
+  "modules": {
+    "T-DEL": { "custom": "Svar på svenska — åäö, é, 例 — inom ≤500 tecken" },
+    "T-REF": { "auto": ["5xx"], "windowHours": 24, "remedy": "refund" }
+  }
+}

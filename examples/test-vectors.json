@@ -1,0 +1,30 @@
+{
+  "schema": "att/v1",
+  "note": "termsHash = keccak256(utf8(canonical)); canonical = stableStringify(manifest) per SPEC.md; the unicode vector locks literal-UTF-8 serialization (non-ASCII is never \\u-escaped)",
+  "vectors": [
+    {
+      "name": "micro",
+      "file": "examples/micro.json",
+      "canonical": "{\"modules\":{\"T-ARB\":{\"finality\":\"none\",\"ladder\":[\"auto\"]},\"T-DEL\":{\"latencyMs\":10000,\"nonEmpty\":true},\"T-LIC\":{\"grants\":[\"use-internal\",\"cache:24h\"]},\"T-REF\":{\"auto\":[\"5xx\",\"timeout\"],\"remedy\":\"refund\",\"windowHours\":24}},\"profile\":\"MICRO\",\"schema\":\"att/v1\",\"seller\":\"0x1111111111111111111111111111111111111111\"}",
+      "termsHash": "0x95efcac07715c038109d59fa691cdeee57431a4fe88bc0c2937c343104409407"
+    },
+    {
+      "name": "standard",
+      "file": "examples/standard.json",
+      "canonical": "{\"modules\":{\"T-ARB\":{\"arbiter\":\"arbiter.example#disputes\",\"callback\":\"att-verdict-callback/v1\",\"decisionWindowHours\":72,\"finality\":\"cert-on-base\",\"ladder\":[\"auto\",\"human\"]},\"T-DEL\":{\"latencyMs\":30000,\"nonEmpty\":true,\"schemaRef\":\"https://seller.example/schemas/report.json\"},\"T-LIA\":{\"capMultiple\":10,\"consequential\":false},\"T-LIC\":{\"conditions\":[\"attribution\"],\"grants\":[\"use-internal\",\"cache:24h\",\"train\"]},\"T-REF\":{\"auto\":[\"5xx\",\"timeout\",\"schema-fail\"],\"openBy\":\"buyer\",\"remedy\":\"refund\",\"windowHours\":72}},\"profile\":\"STANDARD\",\"schema\":\"att/v1\",\"seller\":\"0x2222222222222222222222222222222222222222\"}",
+      "termsHash": "0xec528e2f7984053e3bfd1d2b920376c52a65005f99f2a04346fa81f5a85c0ca4"
+    },
+    {
+      "name": "high",
+      "file": "examples/high.json",
+      "canonical": "{\"legalMirrorHash\":\"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"legalMirrorUri\":\"https://seller.example/legal/att-mirror-v1.pdf\",\"modules\":{\"T-ARB\":{\"altArbiters\":[\"dispute-court.example#objective\"],\"arbiter\":\"arbiter.example#disputes\",\"callback\":\"att-verdict-callback/v1\",\"decisionWindowHours\":72,\"feeSchedule\":{\"human\":\"max(5%, 5 USDC)\"},\"finality\":\"cert-on-base\",\"ladder\":[\"auto\",\"human\",\"panel\"]},\"T-DEL\":{\"latencyMs\":60000,\"nonEmpty\":true,\"schemaRef\":\"0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\"},\"T-ID\":{\"attestor\":\"attestor.example#kyb\",\"tier\":\"bonded\"},\"T-LIA\":{\"capFixed\":\"25000\",\"capMultiple\":10,\"consequential\":false},\"T-LIC\":{\"conditions\":[\"attribution\"],\"grants\":[\"use-internal\",\"derive\",\"redistribute\"]},\"T-REF\":{\"auto\":[\"5xx\",\"timeout\",\"schema-fail\"],\"openBy\":\"both\",\"remedy\":\"redo\",\"windowHours\":168}},\"profile\":\"HIGH\",\"schema\":\"att/v1\",\"seller\":\"0x3333333333333333333333333333333333333333\"}",
+      "termsHash": "0x9b9c4b92e3ce1896801c52af073544da493e5edbd78b656f9e23f21f2be8f138"
+    },
+    {
+      "name": "unicode",
+      "file": "examples/unicode.json",
+      "canonical": "{\"modules\":{\"T-DEL\":{\"custom\":\"Svar på svenska — åäö, é, 例 — inom ≤500 tecken\"},\"T-REF\":{\"auto\":[\"5xx\"],\"remedy\":\"refund\",\"windowHours\":24}},\"profile\":\"MICRO\",\"schema\":\"att/v1\",\"seller\":\"0x4444444444444444444444444444444444444444\"}",
+      "termsHash": "0x7d4a7dd1e9869a2eb7d249b60ce5fd8e0438f50cc3886347f63aad904818e94d"
+    }
+  ]
+}

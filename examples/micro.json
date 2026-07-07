@@ -1,0 +1,11 @@
+{
+  "schema": "att/v1",
+  "profile": "MICRO",
+  "seller": "0x1111111111111111111111111111111111111111",
+  "modules": {
+    "T-DEL": { "latencyMs": 10000, "nonEmpty": true },
+    "T-REF": { "auto": ["5xx", "timeout"], "windowHours": 24, "remedy": "refund" },
+    "T-LIC": { "grants": ["use-internal", "cache:24h"] },
+    "T-ARB": { "ladder": ["auto"], "finality": "none" }
+  }
+}
