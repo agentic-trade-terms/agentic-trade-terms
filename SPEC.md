@@ -19,7 +19,7 @@ One sentence for integrators: **the seller declares a terms manifest; its keccak
 | content-addressed | `termsHash = keccak256(canonical JSON)`; anyone can recompute; no registry required to verify |
 | profiled | preset bundles per ticket band, so a $0.20 call carries no escrow ceremony |
 | arbiter-pluggable | the arbiter is a designated field, not an assumption — decentralized courts, named accountable experts, or none |
-| rail-neutral | binds to x402 today; nothing in the manifest is x402-specific — the hash can ride any rail with a per-payment metadata slot (Google AP2 cart mandates, OpenAI/Stripe ACP) |
+| rail-neutral | binds to x402 today; nothing in the manifest is x402-specific — the hash can ride any rail with a per-payment metadata slot (Google AP2 cart mandates, OpenAI/Stripe ACP, Stripe/Tempo's MPP) |
 
 ## manifest
 
@@ -71,7 +71,7 @@ The hash is the identity. `termsUri` (where the manifest is hosted — https or 
 
 keccak256 rather than SHA-256 is a stated trade-off: it is the EVM-native primitive — on-chain verifiers and verdict certificates recompute it at near-zero marginal cost — at the price of sitting outside WebCrypto, so non-EVM implementers need a library. For a spec whose finality layer is on-chain, the trade goes to keccak.
 
-A hash without its preimage proves nothing: parties that may later rely on the terms SHOULD archive the manifest bytes at binding time — `termsUri` liveness is the seller's choice, not a protocol guarantee.
+A hash without its preimage proves nothing: parties that may later rely on the terms SHOULD archive the manifest bytes at binding time — `termsUri` liveness is the seller's choice, not a protocol guarantee. Content addressing also supports confidential bilateral terms: a manifest need not be public — share it privately with the counterparty and bind it publicly by hash; anyone later shown the manifest can still verify.
 
 ## modules
 
@@ -163,6 +163,8 @@ An accountable-human ruling under `finality: cert-on-base` is third-party checka
 | `attested` | seller wallet bound to a verified legal entity (KYB) via a named attestor |
 | `bonded` | `attested` + seller bond posted; bond slashable by ruling |
 
+T-ID is seller-side by design: the seller carries the performance obligations the tiers vouch for, while the buyer's only obligation — payment — is already cryptographically settled. Buyer identity, mandates, and spend limits belong to the payment/identity layer (AP2 mandates, ERC-8004), not the terms.
+
 ## profiles
 
 | Profile | Ticket band | Preset |
@@ -207,7 +209,7 @@ The nearest prior pattern we have identified is the **Ricardian contract** (Grig
 |---|---|---|
 | x402 `offer-and-receipt` extension (shipped) | signed per-call offer for dispute evidence — no terms modules, no arbiter | `termsHash` can ride the same extensions mechanism |
 | x402r / Refund Protocol | per-call designated pluggable arbiter (`captureAuthorizer`) + escrow — no terms; adjudicates ad-hoc evidence | an x402r escrow whose arbiter resolves against an ATT manifest = the full stack |
-| Legal Context Protocol (AAA-ICDR + Integra Ledger, draft) | `.well-known` terms-URL + hash pointer to prose — no structured modules, no arbiter field | LCP's `terms` URL can point to an ATT manifest; ATT is the structured layer LCP's tiers leave open |
+| Legal Context Protocol (AAA-ICDR + Integra Ledger; founding contributors incl. Google, IBM, Circle) | `.well-known` pointer to an opaque terms document (explicitly terms-agnostic) + SHA-256 `atrHash` + optional signed acceptance; its `disputeResolution` names an institution and jurisdiction — not a machine-executable arbiter (no ladder, finality, or ruling callback) | the two nest: LCP's `terms` URL can point to an ATT manifest, its `atrHash` pins the served bytes, its signed acceptance is assent level b — ATT is the structured layer LCP leaves open |
 | W3C ODRL / IETF AI-Pref | rights vocabulary | T-LIC is an ODRL-mappable profile (see T-LIC) |
 | Accord Project (LF) | document-scale machine-readable contract templates | the legal mirror is instantiable as an Accord/Cicero template (Concerto-modeled) |
 | Google AP2 mandates | signed per-transaction payment intent; disputes routed to card networks | an ATT termsHash can ride inside a Cart Mandate; ATT is rail-neutral by design |
